@@ -1,7 +1,5 @@
 node_modules/
 bower_components/
-dev/
 public/
 .DS_Store
 .sass-cache
-bower.json
