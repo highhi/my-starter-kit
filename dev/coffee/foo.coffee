@@ -1,5 +1,5 @@
 class Foo
     constructor : ->
-        @lastName = '和弥'
+        @lastName = 'foo'
 
 module.exports = Foo

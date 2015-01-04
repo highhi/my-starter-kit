@@ -1,5 +1,5 @@
 class Bar
     constructor : ->
-        @firstName = '水野'
+        @firstName = 'bar'
 
 module.exports = Bar
