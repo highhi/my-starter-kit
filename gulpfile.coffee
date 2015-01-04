@@ -100,7 +100,7 @@ gulp.task 'spritesmith', ->
         imgPath : '../img/sprite.png'
         algorithm : 'top-down'
         padding : 10
-    spriteData.img.pipe gulp.dest('public/img')
+    spriteData.img.pipe gulp.dest('dev/img')
     spriteData.css.pipe gulp.dest('dev/sass')
 
 # public 初期化
