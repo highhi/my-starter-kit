@@ -1,0 +1,18 @@
+extend _layout
+block vars
+    //- use at _inc/_meta
+    - var metaTitle = 'Archive | ' + SITE_NAME
+    - var metaDesc = 'Archive description'
+    - var metaKeys = 'jade, html'
+    - var ogUrl = 'http://example.com'
+
+block append css
+    link(rel="stylesheet" href='/css/archive.css')
+
+//- use at _inc/_nav
+block append navList
+    li.Nav__item
+        a.sprites.social19(href="#") Facebook
+
+block content
+    p Archive.

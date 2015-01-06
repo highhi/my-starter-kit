@@ -1,22 +1,14 @@
-- if (page.code == 'top')
-    title #{SITE_NAME}
-    meta(name='description', content='#{SITE.DESCRIPTION}')
-    meta(name='keywords', content='#{SITE.KEYWORDS}')
-    meta(property="og:title", content="#{SITE_NAME}')")
-    meta(property="og:type", content="website")
-    meta(property="og:url", content="#{SITE.URL}")
-    meta(property="og:description", content="#{SITE.DESCRIPTION}")
-    meta(property="og:image", content="#{SITE.URL}#{ogp.img}")
-    meta(property="og:site_name", content="#{SITE_NAME}")
-    meta(property="og:locale", content="#{ogp.lang}")
-- else
-    title #{page.name} | #{SITE_NAME}
-    meta(name='description', content='#{page.name}')
-    meta(name='keywords', content='#{page.keys},#{SITE.KEYWORDS}')
-    meta(property="og:title", content="#{page.name} | #{SITE_NAME}")
-    meta(property="og:type", content="website")
-    meta(property="og:url", content="#{SITE.URL}")
-    meta(property="og:description", content="#{page.desc}")
-    meta(property="og:image", content="#{SITE.URL}#{ogp.img}")
-    meta(property="og:site_name", content="#{SITE_NAME}")
-    meta(property="og:locale", content="#{ogp.lang}")
+- metaTitle = metaTitle || SITE_NAME
+- metaDesc = metaDesc || SITE.DESCRIPTION
+- metaKeys = metaKeys || SITE.KEYWORDS
+
+title #{metaTitle}
+meta(name='description', content='#{metaDesc}')
+meta(name='keywords', content='#{metaKeys}')
+meta(property="og:title", content="#{metaTitle}")
+meta(property="og:type", content="website")
+meta(property="og:url", content="#{ogUrl}")
+meta(property="og:description", content="#{metaDesc}")
+meta(property="og:image", content="#{SITE.URL}#{ogp.img}")
+meta(property="og:site_name", content="#{SITE_NAME}")
+meta(property="og:locale", content="#{ogp.lang}")

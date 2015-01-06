@@ -1,23 +1,13 @@
 extend _layout
 block vars
-    - var page = { code: 'top'}
-
-block css
-    link(rel="stylesheet" href='/css/style.css')
-
-block header
-    header.Header.clear
-        h1.Logo
-            a(href='/') #{SITE_NAME}
-        include _inc/_nav
-
+    //- use at _inc/_meta
+    - var metaTitle = SITE_NAME
+    - var metaDesc = 'Jade test'
+    - var metaKeys = 'jade, html'
+    - var ogUrl = 'http://example.com'
+    
 block content
     p Hellow World
-
-block footer
-    footer.Footer
-        p.copyright
-            samll © #{SITE_NAME}
-
+    
 block script
-    script(src='/js/bundle.js')
+    script(async src='/js/bundle.js')

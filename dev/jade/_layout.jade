@@ -8,9 +8,18 @@ html(lang='ja')
         meta(http-equiv='X-UA-Compatible', content='IE=Edge, chrome=1')
         include _inc/_meta
         block css
+            link(rel="stylesheet" href='/css/style.css')
     body
-        block header
-        .Container.clear
+        header.Header
+            h1.Logo
+                a(href='/') #{SITE_NAME}
+            include _inc/_nav
+
+        .Container
             block content
-        block footer
+
+        footer.Footer
+            p.copyright
+                samll © #{SITE_NAME}
+
         block script

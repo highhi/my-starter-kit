@@ -1,3 +1,5 @@
+'use strict'
+
 jQuery = require 'jquery'
 Bar = require './bar'
 Foo = require './foo'
