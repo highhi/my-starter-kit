@@ -22,19 +22,6 @@ gulp.task 'jade', ->
         locals : config
     .pipe gulp.dest 'public'
 
-# gulp.task 'sass', ->
-#     gulp.src 'dev/sass/**/*.scss'
-#     .pipe plumber()
-#     .pipe sourcemaps.init()
-#     .pipe sass
-#         errLogToConsole: true
-#     .pipe pleeease
-#         autoprefixer :
-#             browsers : 'last 2 versions'
-#         minifier : false
-#     .pipe sourcemaps.write('.')
-#     .pipe gulp.dest 'public/css'
-
 # sass コンパイル
 gulp.task 'sass', ->
     gulp.src 'dev/sass/**/*.scss'
@@ -43,29 +30,15 @@ gulp.task 'sass', ->
         style : 'expanded'
         precision : 10
         compass : true
-        'sourcemap=file' : true
-        sourcemapPath : 'dev/sass/'
+        'sourcemap=file' : false
     ).on 'error', console.error.bind(console)
-    .pipe $.sourcemaps.init()
     .pipe $.autoprefixer('last 2 versions', 'ie 9', 'ie 8')
-    .pipe $.sourcemaps.write('.')
     .pipe gulp.dest 'public/css'
-
-# sass コンパイル
-# gulp.task 'sass', ->
-#     gulp.src 'dev/sass/**/*.scss'
-#     .pipe $.plumber()
-#     .pipe $.compass
-#         config_file : 'dev/config.rb'
-#         css: 'public/css/',
-#         sass: 'dev/sass/',
-#         image: 'public/img/',
-#     .pipe gulp.dest 'public'
 
 # browserify jsの圧縮結合
 gulp.task 'browserify', ->
     browserify
-        entries: ['./dev/coffee/test.coffee']
+        entries: ['./dev/coffee/main.coffee']
         extensions: ['.coffee', '.js']
         debug : true
     .transform 'coffeeify'
@@ -74,18 +47,14 @@ gulp.task 'browserify', ->
     .pipe source 'bundle.js'
     .pipe buffer()
     .pipe $.sourcemaps.init loadMaps: true
-    #.pipe $.uglify()
+    .pipe $.uglify()
     .pipe $.sourcemaps.write('./')
     .pipe gulp.dest 'public/js'
-
-gulp.task 'jshint', ->
-    gulp.src 'public/js/**/*.js'
-    .pipe $.jshint()
-    .pipe $.jshint.reporter('jshint-stylish')
 
 # 画像最適化
 gulp.task 'images', ->
     gulp.src 'dev/img/*'
+    .pipe $.changed('public/img')
     .pipe $.imagemin
         optimizationLevel : 7
         progressive : true
@@ -124,9 +93,9 @@ gulp.task 'watch', ->
     gulp.watch 'dev/img/sprite/*.png', ['spritesmith']
     gulp.watch 'dev/img/*', ['images']
     gulp.watch 'public/js/*.js', ['jshint']
-    gulp.watch ['public/**', '!public/**/*.map', '!public/img'], ['reload']
+    gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
 
 gulp.task 'init', ->
-    runSequence 'clean', 'sass', [ 'spritesmith', 'jshint', 'jade', 'browserify', 'images']
+    runSequence 'clean', 'sass', [ 'spritesmith', 'jade', 'browserify', 'images']
 
 gulp.task 'default', ['sync','watch']
