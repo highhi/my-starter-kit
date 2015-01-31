@@ -1,7 +1,7 @@
 {
     "SITE_NAME": "This site is sample",
     "SITE": {
-        "VIEWPORT": "width=960",
+        "VIEWPORT": "device-width",
         "DESCRIPTION": "Description of this site",
         "KEYWORDS": ["key1", "key2"],
         "URL": "http://exp.com/"

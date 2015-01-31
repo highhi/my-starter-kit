@@ -91,11 +91,11 @@ gulp.task 'watch', ->
     gulp.watch 'dev/sass/**/*.scss', ['sass']
     gulp.watch 'dev/coffee/**/*.coffee', ['browserify']
     gulp.watch 'dev/img/sprite/*.png', ['spritesmith']
-    gulp.watch 'dev/img/*', ['images']
+    gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
     gulp.watch 'public/js/*.js', ['jshint']
     gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
 
 gulp.task 'init', ->
-    runSequence 'clean', 'sass', [ 'spritesmith', 'jade', 'browserify', 'images']
+    runSequence 'clean', 'sass', 'spritesmith', ['jade', 'browserify', 'images']
 
 gulp.task 'default', ['sync','watch']
