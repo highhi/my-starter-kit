@@ -92,7 +92,6 @@ gulp.task 'watch', ->
     gulp.watch 'dev/coffee/**/*.coffee', ['browserify']
     gulp.watch 'dev/img/sprite/*.png', ['spritesmith']
     gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
-    gulp.watch 'public/js/*.js', ['jshint']
     gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
 
 gulp.task 'init', ->
