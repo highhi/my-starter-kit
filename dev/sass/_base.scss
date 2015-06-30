@@ -4,7 +4,6 @@
 
 html, body {
     min-width: $siteWidth;
-    transform: translate(10px);
 }
 
 body {
@@ -33,7 +32,6 @@ a {
 //header
 .Header {
     @extend %center;
-    margin-bottom: 60px;
 }
 
 //logo
