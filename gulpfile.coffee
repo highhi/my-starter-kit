@@ -1,101 +1,76 @@
 'use strict'
 
 # PLUGINS
-gulp = require 'gulp'
-source = require 'vinyl-source-stream'
-buffer = require 'vinyl-buffer'
-browserify = require 'browserify'
-sync = require 'browser-sync'
-del = require 'del'
-runSequence = require 'run-sequence'
-$ = require('gulp-load-plugins')()
+gulp 	= require 'gulp'
+sync 	= require 'browser-sync'
+del 	= require 'del'
+seque 	= require 'run-sequence'
+$ 		= require('gulp-load-plugins')()
 
-config = require './config.json'
-handleErrors = require './handleErrors.js'
+# html minify
+gulp.task 'html', ->
+	gulp.src 'dev/**/*.html'
+	.pipe $.plumber()
+	.pipe $.minifyHtml
+		conditionals : true
+		quotes : true
+	.pipe gulp.dest 'public'
 
-# jade コンパイル
-gulp.task 'jade', ->
-    gulp.src ['dev/jade/**/*.jade', '!dev/jade/**/_*.jade']
-    .pipe $.plumber()
-    .pipe $.jade
-        pretty: true
-        locals : config
-    .pipe gulp.dest 'public'
-
-# sass コンパイル
+# sass compile
 gulp.task 'sass', ->
-    gulp.src 'dev/sass/**/*.scss'
-    .pipe $.plumber()
-    .pipe $.rubySass(
-        style : 'expanded'
-        precision : 10
-        compass : true
-        'sourcemap=file' : false
-    ).on 'error', console.error.bind(console)
-    .pipe $.autoprefixer('last 2 versions', 'ie 9', 'ie 8')
-    .pipe gulp.dest 'public/css'
+	$.rubySass 'dev/scss/',
+		style : 'compressed'
+		compass : true
+		sourcemap: true
+	.pipe $.sourcemaps.write './',
+		sourceRoot : '/dev/scss/'
+	.pipe gulp.dest 'public/css'
 
-# browserify jsの圧縮結合
-gulp.task 'browserify', ->
-    browserify
-        entries: ['./dev/coffee/main.coffee']
-        extensions: ['.coffee', '.js']
-        debug : true
-    .transform 'coffeeify'
-    .bundle()
-    .on('error', handleErrors)
-    .pipe source 'bundle.js'
-    .pipe buffer()
-    .pipe $.sourcemaps.init loadMaps: true
-    .pipe $.uglify()
-    .pipe $.sourcemaps.write('./')
-    .pipe gulp.dest 'public/js'
+# js minify
+gulp.task 'js', ->
+	gulp.src 'dev/js/**/*.js'
+	.pipe $.plumber()
+	.pipe $.jshint()
+	.pipe $.jshint.reporter 'jshint-stylish'
+	.pipe $.sourcemaps.init loadMaps: true
+		.pipe $.uglify()
+	.pipe $.sourcemaps.write './',
+		sources : 'camel'
+		sourceRoot : '/dev/js/'
+	.pipe gulp.dest 'public/js'
 
 # 画像最適化
 gulp.task 'images', ->
-    gulp.src 'dev/img/*'
-    .pipe $.changed('public/img')
-    .pipe $.imagemin
-        optimizationLevel : 7
-        progressive : true
-        interlaced : true
-    .pipe gulp.dest('public/img')
-
-gulp.task 'spritesmith', ->
-    spriteData = gulp.src 'dev/img/sprite/*.png'
-    .pipe $.spritesmith
-        imgName : 'sprite.png'
-        cssName : '_sprite.scss'
-        imgPath : '../img/sprite.png'
-        algorithm : 'top-down'
-        padding : 10
-    spriteData.img.pipe gulp.dest('dev/img')
-    spriteData.css.pipe gulp.dest('dev/sass')
+	gulp.src 'dev/img/*'
+	.pipe $.changed('public/img')
+	.pipe $.imagemin
+		optimizationLevel : 7
+		progressive : true
+		interlaced : true
+	.pipe gulp.dest('public/img')
 
 # public 初期化
 gulp.task 'clean', del.bind(null, ['public'])
 
 # サーバ起動
 gulp.task 'sync', ->
-    sync.init null,
-        server :
-            baseDir : 'public'
+	sync.init null,
+		server :
+			baseDir : 'public'
 
 # ブラウザオートリロード
 gulp.task 'reload', ->
-    sync.reload()
-    
+	sync.reload()
+	
 # WATCH
 gulp.task 'watch', ->
-    gulp.watch 'dev/jade/**/*.jade', ['jade']
-    gulp.watch 'dev/sass/**/*.scss', ['sass']
-    gulp.watch 'dev/coffee/**/*.coffee', ['browserify']
-    gulp.watch 'dev/img/sprite/*.png', ['spritesmith']
-    gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
-    gulp.watch 'public/js/*.js', ['jshint']
-    gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
+	gulp.watch 'dev/**/*.html', ['html']
+	gulp.watch 'dev/scss/**/*.scss', ['sass']
+	gulp.watch 'dev/js/**/*.js', ['js']
+	gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
+	gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
 
 gulp.task 'init', ->
-    runSequence 'clean', 'sass', 'spritesmith', ['jade', 'browserify', 'images']
+	seque 'clean', 'js', 'sass', ['html', 'images']
 
 gulp.task 'default', ['sync','watch']
