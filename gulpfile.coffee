@@ -64,22 +64,13 @@ gulp.task 'reload', ->
 	
 # WATCH
 gulp.task 'watch', ->
-<<<<<<< HEAD
-	gulp.watch 'dev/**/*.html', ['html']
-	gulp.watch 'dev/scss/**/*.scss', ['sass']
-	gulp.watch 'dev/js/**/*.js', ['js']
-	gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
-	gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
-=======
-    gulp.watch 'dev/jade/**/*.jade', ['jade']
-    gulp.watch 'dev/sass/**/*.scss', ['sass']
-    gulp.watch 'dev/coffee/**/*.coffee', ['browserify']
-    gulp.watch 'dev/img/sprite/*.png', ['spritesmith']
-    gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
-    gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
->>>>>>> FETCH_HEAD
+gulp.watch 'dev/**/*.html', ['html']
+gulp.watch 'dev/scss/**/*.scss', ['sass']
+gulp.watch 'dev/js/**/*.js', ['js']
+gulp.watch ['dev/img/*', '!dev/img/sprite/*'], ['images']
+gulp.watch ['public/**', '!public/**/*.map', '!public/img/*'], ['reload']
 
 gulp.task 'init', ->
-	seque 'clean', 'js', 'sass', ['html', 'images']
+seque 'clean', 'js', 'sass', ['html', 'images']
 
 gulp.task 'default', ['sync','watch']
