@@ -9,6 +9,13 @@ div,header,footer,article,section,figure,h1,h2,h3,h4,p,ul,ol,li,input,area,small
     padding: 0;
 }
 
+input,
+textarea,
+button,
+select {
+	border : none;
+}
+
 img {
     vertical-align: top;
 }

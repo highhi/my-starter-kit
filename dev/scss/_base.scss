@@ -21,6 +21,10 @@ a {
     }
 }
 
+p {
+    color: #ccc;
+}
+
 //sprite
 .sprites {
     @include spr-img($spritesheet-image);
