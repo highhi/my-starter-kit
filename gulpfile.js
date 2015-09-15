@@ -1,23 +1,23 @@
-var gulp = require( 'gulp' );
-var sync = require( 'browser-sync' );
-var del = require( 'del' );
-var plumber = require( 'gulp-plumber' );
-var rename = require( 'gulp-rename' );
-var sourceMaps = require( 'gulp-sourcemaps' );
+var gulp            = require( 'gulp' );
+var sync            = require( 'browser-sync' );
+var del             = require( 'del' );
+var plumber         = require( 'gulp-plumber' );
+var rename          = require( 'gulp-rename' );
+var sourceMaps      = require( 'gulp-sourcemaps' );
 
-var DIR_MAPS = '../_maps';
+var DIR_MAPS        = '../_maps';
 
-var DIR_PUBLIC = './public';
-var DIR_PUBLIC_CSS = './public/css';
-var DIR_PUBLIC_JS = './public/js';
+var DIR_PUBLIC      = './public';
+var DIR_PUBLIC_CSS  = './public/css';
+var DIR_PUBLIC_JS   = './public/js';
 var DIR_PUBLIC_MAPS = './public/_maps';
 
-var DIR_DEV_SCSS = './dev/scss';
-var DIR_DEV_JS = './dev/js';
+var DIR_DEV_SCSS    = './dev/scss';
+var DIR_DEV_JS      = './dev/js';
 
-var DEV_HTML_FILES = './dev/**/*.html';
-var DEV_SCSS_FILES = './dev/scss/*.scss';
-var DEV_JS_FILES = './dev/js/**/*.js';
+var DEV_HTML_FILES  = './dev/**/*.html';
+var DEV_SCSS_FILES  = './dev/scss/**/*.scss';
+var DEV_JS_FILES    = './dev/js/**/*.js';
 
 
 gulp.task('minify-html', function() {
@@ -26,8 +26,8 @@ gulp.task('minify-html', function() {
     return gulp.src( DEV_HTML_FILES )
         .pipe( plumber() )
         .pipe( minifyHtml({
-            conditionals: true,
-            quotes: true
+            conditionals : true,
+            quotes       : true
         }))
         .pipe( gulp.dest( DIR_PUBLIC ) );
 });
@@ -37,8 +37,8 @@ gulp.task('build-css', function() {
     var pleeease = require( 'gulp-pleeease' );
 
     return rubySass( DIR_DEV_SCSS, {
-        style: 'compressed',
-        compass : true,
+        style     : 'compressed',
+        compass   : true,
         sourcemap : true
     })
     .pipe( plumber() )
@@ -48,11 +48,11 @@ gulp.task('build-css', function() {
         }
     }))
     .pipe( rename({
-        extname: '.min.css'
+        extname : '.min.css'
     }))
     .pipe( sourceMaps.write( DIR_MAPS, {
         includeContent : false,
-        sourceRoot : DIR_PUBLIC_MAPS
+        sourceRoot     : DIR_PUBLIC_MAPS
     }))
     .pipe( gulp.dest( DIR_PUBLIC_CSS ) );
 });
@@ -75,13 +75,13 @@ gulp.task('build-css', function() {
 
 gulp.task('build-js', function() {
     var browserify = require( 'browserify' );
-    var source = require( 'vinyl-source-stream' );
-    var buffer = require( 'vinyl-buffer' );
-    var uglify = require( 'gulp-uglify' );
+    var source     = require( 'vinyl-source-stream' );
+    var buffer     = require( 'vinyl-buffer' );
+    var uglify     = require( 'gulp-uglify' );
 
     return browserify({
             entries : [ DIR_DEV_JS + '/main.js' ],
-            debug : true
+            debug   : true
         })
         .bundle()
         .on( 'error', function( err ) {
@@ -95,7 +95,7 @@ gulp.task('build-js', function() {
         .pipe( uglify() )
         .pipe( sourceMaps.write( DIR_MAPS, {
             includeContent : false,
-            sourceRoot : DIR_PUBLIC_MAPS
+            sourceRoot     : DIR_PUBLIC_MAPS
         }))
         .pipe( gulp.dest( DIR_PUBLIC_JS ) );
 });
@@ -111,7 +111,7 @@ gulp.task( 'init', function() {
 gulp.task('sync', function() {
     return sync.init( null, {
         server : {
-            baseDir: DIR_PUBLIC
+            baseDir : DIR_PUBLIC
         }
     });
 });
